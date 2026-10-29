@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JESS’s Routine Maker</title>
+<style>
+:root{--bg:#f4f1ec;--card:#fff;--ink:#1d1b2e;--mute:#6b6880;--line:#e6e2da;--a:#5b3df5;--a2:#ff6b4a;--ok:#1f9d6b;--sh:0 8px 30px rgba(40,30,90,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13121c;--card:#1d1c2b;--ink:#f1eff9;--mute:#9b98b3;--line:#2d2b40;--sh:0 8px 30px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#13121c;--card:#1d1c2b;--ink:#f1eff9;--mute:#9b98b3;--line:#2d2b40;--sh:0 8px 30px rgba(0,0,0,.4);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input{font:inherit;color:inherit}
+.hidden{display:none!important}
+/* login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(900px 500px at 10% -10%,rgba(91,61,245,.25),transparent),radial-gradient(700px 500px at 100% 110%,rgba(255,107,74,.22),transparent),var(--bg)}
+.lcard{width:100%;max-width:400px;background:var(--card);border-radius:24px;padding:34px 28px;box-shadow:var(--sh);border:1px solid var(--line)}
+.logo{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--a),var(--a2));display:grid;place-items:center;font-size:28px;margin-bottom:18px}
+.lcard h1{margin:0 0 6px;font-size:28px;letter-spacing:-.5px}
+.lcard p{margin:0 0 22px;color:var(--mute);font-size:14px}
+label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.6px}
+input[type=text],input[type=password]{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);background:transparent;outline:none}
+input:focus{border-color:var(--a)}
+.btn{width:100%;margin-top:22px;padding:14px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--a),#7a5cff);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(91,61,245,.35)}
+.btn:active{transform:scale(.98)}
+.err{color:#d93a3a;font-size:13px;min-height:18px;margin-top:10px}
+/* app */
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;max-width:1000px;margin:0 auto}
+header h2{margin:0;font-size:20px;letter-spacing:-.3px}
+header small{color:var(--mute)}
+.ghost{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:13px}
+main{max-width:1000px;margin:0 auto;padding:0 20px 40px;display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:820px){main{grid-template-columns:320px 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--sh)}
+.ring{--p:0;width:150px;height:150px;border-radius:50%;margin:6px auto 14px;background:conic-gradient(var(--a) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center}
+.ring div{width:118px;height:118px;border-radius:50%;background:var(--card);display:grid;place-items:center;text-align:center}
+.ring b{font-size:30px;display:block}
+.ring span{font-size:11px;color:var(--mute)}
+.now{background:linear-gradient(135deg,var(--a),#7a5cff);color:#fff;border:0}
+.now small{opacity:.8}
+.now h3{margin:4px 0 0;font-size:20px}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tab{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:13px}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.item{display:flex;gap:12px;align-items:center;padding:12px 10px;border-radius:14px;border:1px solid transparent;cursor:pointer}
+.item:hover{background:rgba(127,127,160,.08)}
+.item.cur{border-color:var(--a);background:rgba(91,61,245,.07)}
+.time{width:96px;flex:none;font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.chk{width:24px;height:24px;border-radius:8px;border:2px solid var(--line);flex:none;display:grid;place-items:center;color:#fff;font-size:14px}
+.item.done .chk{background:var(--ok);border-color:var(--ok)}
+.item.done .tt{text-decoration:line-through;color:var(--mute)}
+.tt{flex:1;font-size:15px}
+.tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.5px;flex:none}
+.t-body{background:#ffe9e3;color:#c4421f}.t-study{background:#e8e4ff;color:#4a2fd8}.t-biz{background:#dcf5ea;color:#12784f}.t-life{background:#eceaf2;color:#555}.t-class{background:#fff1cf;color:#8a6200}
+@media(prefers-color-scheme:dark){.tag{filter:brightness(.9)}}
+.note{width:100%;margin-top:10px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:transparent;min-height:70px;resize:vertical;font:inherit;color:inherit}
+@media(max-width:520px){.time{width:74px}.tag{display:none}}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <div class="lcard">
+    <div class="logo">🗓️</div>
+    <h1>JESS’s Routine Maker</h1>
+    <p>Plan your day. Train hard, study smart, build your business.</p>
+    <label for="nm">Your name</label>
+    <input id="nm" type="text" placeholder="Jess" autocomplete="off">
+    <label for="pin">4-digit PIN</label>
+    <input id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <div class="err" id="err"></div>
+    <button class="btn" id="go">Enter</button>
+    <p style="margin:14px 0 0;font-size:12px">First time? Pick a PIN and it will be saved for you.</p>
+  </div>
+</section>
+
+<div id="app" class="hidden">
+  <header>
+    <div><small id="date"></small><h2 id="hi"></h2></div>
+    <button class="ghost" id="out">Log out</button>
+  </header>
+  <main>
+    <div style="display:grid;gap:18px;align-content:start">
+      <div class="card">
+        <div class="ring" id="ring"><div><p style="margin:0"><b id="pct">0%</b><span id="cnt">0 of 0 done</span></p></div></div>
+        <div style="text-align:center;font-size:13px;color:var(--mute)" id="msg"></div>
+      </div>
+      <div class="card now"><small>Right now</small><h3 id="nowT">—</h3><small id="nowS"></small></div>
+      <div class="card"><b style="font-size:14px">Today’s notes</b><textarea class="note" id="notes" placeholder="Calories, jersey orders, LeetCode problem solved…"></textarea></div>
+    </div>
+    <div class="card">
+      <div class="tabs" id="tabs"></div>
+      <div id="list"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const S={
+ wd:[["06:00","06:10","Wake up, cold face wash, sunscreen","life"],["06:10","06:30","Body stretching","body"],["06:30","07:10","Business Analyst study","study"],["07:10","07:45","Breakfast + log calories","life"],["08:00","13:00","Class (free periods: BA notes / LeetCode)","class"],["13:00","13:30","Lunch + log calories","life"],["13:30","14:40","Business block (jersey / dropshipping)","biz"],["14:40","15:00","Pre-gym snack and travel","life"],["15:00","17:00","Gym","body"],["17:00","17:30","Shower, snack + log calories","life"],["17:30","18:00","Quick jersey tasks, reapply sunscreen","biz"],["18:00","20:00","Football","body"],["20:00","21:00","Dinner, family time + log calories","life"],["21:00","21:30","LeetCode (Mon/Wed/Fri) or BA revision (Tue/Thu)","study"],["21:30","22:30","Dropshipping","biz"],["22:30","22:45","Plan tomorrow, light stretching","body"],["22:45","23:00","Wind down, cold face wash","life"]],
+ sat:[["06:00","06:30","Wake up, cold face wash, sunscreen, stretching","life"],["07:00","08:00","Breakfast + log calories","life"],["09:00","11:00","Dropshipping block","biz"],["11:00","13:00","Jersey business block","biz"],["13:00","14:00","Lunch + log calories","life"],["15:00","17:00","Gym or football (pick one)","body"],["19:00","20:00","LeetCode","study"],["20:00","21:00","Dinner + log calories","life"],["22:30","23:00","Plan Sunday, wind down","life"]],
+ sun:[["06:00","06:30","Wake up, cold face wash, sunscreen, stretching","life"],["07:00","08:00","Breakfast + log calories","life"],["09:00","11:00","Business Analyst study block","study"],["11:00","12:00","Weekly review: calories, sales, goals","biz"],["13:00","14:00","Lunch + log calories","life"],["16:00","17:00","Optional LeetCode problem","study"],["17:00","18:00","Rest and long stretching","body"],["21:00","22:00","Plan the week ahead","biz"],["22:30","23:00","Wind down","life"]]};
+const NAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const $=id=>document.getElementById(id);
+let db=null,doc=null,state={days:{},notes:{}},user="Jess",view=null,saveT;
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const kind=d=>d===0?"sun":d===6?"sat":"wd";
+const mins=t=>{const[a,b]=t.split(":");return +a*60+ +b};
+const fmt=t=>{let[h,m]=t.split(":").map(Number);const s=h>=12?"PM":"AM";h=h%12||12;return h+":"+String(m).padStart(2,"0")+" "+s};
+async function sha(s){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("jess:"+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return"p"+s}}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+async function init(){
+  try{
+    const u=await claude.use("user");db=await claude.use("db");
+    if(u&&db){const id=await u.id();if(id){const col=db.collection("data/users/"+id);doc={profile:col.doc("profile"),data:col.doc("routine")}}}
+  }catch(e){doc=null}
+  const last=ls("jess_session");if(last){try{const s=JSON.parse(last);user=s.n;await load();show()}catch(e){}}
+}
+async function load(){
+  if(doc){try{const s=await doc.data.get();if(s.exists)state=Object.assign({days:{},notes:{}},s.data())}catch(e){}}
+  else{try{state=JSON.parse(ls("jess_state")||"")||state}catch(e){}}
+}
+function save(){
+  clearTimeout(saveT);saveT=setTimeout(async()=>{
+    const keep=Object.keys(state.days).sort().slice(-30),d={},n={};
+    keep.forEach(k=>{d[k]=state.days[k]});Object.keys(state.notes).sort().slice(-30).forEach(k=>{n[k]=state.notes[k]});
+    state={days:d,notes:n};
+    if(doc){try{await doc.data.set({days:d,notes:n})}catch(e){}}else ls("jess_state",JSON.stringify(state));
+  },500);
+}
+$("go").onclick=async()=>{
+  const n=$("nm").value.trim(),p=$("pin").value;$("err").textContent="";
+  if(!n){$("err").textContent="Please enter your name.";return}
+  if(!/^\d{4}$/.test(p)){$("err").textContent="PIN must be 4 digits.";return}
+  const h=await sha(p);let stored=null;
+  if(doc){try{const s=await doc.profile.get();if(s.exists)stored=s.data().pin}catch(e){}}else stored=ls("jess_pin");
+  if(stored&&stored!==h){$("err").textContent="Wrong PIN. Try again.";return}
+  if(!stored){if(doc){try{await doc.profile.set({pin:h,name:n})}catch(e){}}else ls("jess_pin",h)}
+  user=n;ls("jess_session",JSON.stringify({n}));await load();show();
+};
+$("pin").addEventListener("keydown",e=>{if(e.key==="Enter")$("go").click()});
+$("out").onclick=()=>{ls("jess_session","");location.reload()};
+function show(){$("login").classList.add("hidden");$("app").classList.remove("hidden");$("hi").textContent="Hi, "+user+" 👋";
+  const t=new Date();$("date").textContent=t.toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  view=t.getDay();render();setInterval(render,60000)}
+function render(){
+  const real=new Date().getDay(),tk=today();
+  $("tabs").innerHTML=[1,2,3,4,5,6,0].map(d=>`<button class="tab ${d===view?"on":""}" data-d="${d}">${NAMES[d].slice(0,3)}${d===real?" •":""}</button>`).join("");
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{view=+b.dataset.d;render()});
+  const items=S[kind(view)],isToday=view===real,done=isToday?(state.days[tk]||[]):[];
+  const now=new Date(),nm=now.getHours()*60+now.getMinutes();
+  let cur=-1;if(isToday)items.forEach((it,i)=>{if(nm>=mins(it[0])&&nm<mins(it[1]))cur=i});
+  $("list").innerHTML=items.map((it,i)=>`<div class="item ${done.includes(i)?"done":""} ${i===cur?"cur":""}" data-i="${i}"><div class="time">${fmt(it[0])}<br>${fmt(it[1])}</div><div class="tt">${it[2]}</div><span class="tag t-${it[3]}">${it[3]}</span><div class="chk">${done.includes(i)?"✓":""}</div></div>`).join("");
+  document.querySelectorAll(".item").forEach(el=>el.onclick=()=>{
+    if(!isToday){$("msg").textContent="You can tick items only on the current day.";return}
+    const i=+el.dataset.i,a=state.days[tk]||[];state.days[tk]=a.includes(i)?a.filter(x=>x!==i):[...a,i];save();render()});
+  const total=items.length,n=done.length,p=isToday&&total?Math.round(n/total*100):0;
+  $("ring").style.setProperty("--p",p);$("pct").textContent=p+"%";$("cnt").textContent=n+" of "+total+" done";
+  if(isToday)$("msg").textContent=p===100?"Perfect day! 🔥":p>=60?"Great progress, keep going.":"Tick items off as you finish them.";
+  const c=items[cur];$("nowT").textContent=c?c[2]:isToday?"Free time":"Pick today to see live status";$("nowS").textContent=c?fmt(c[0])+" – "+fmt(c[1]):"";
+  const nt=$("notes");if(document.activeElement!==nt)nt.value=state.notes[tk]||"";
+  nt.oninput=()=>{state.notes[tk]=nt.value;save()};
+}
+init();
+</script>
+</body>
+</html>
